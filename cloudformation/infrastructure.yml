@@ -183,6 +183,7 @@ Resources:
                         # Install CodeDeploy agent
                         yum -y update
                         yum install -y ruby httpd24 php70
+                        service httpd start
                         cd /home/ec2-user
                         curl -O https://${InstallerBucket}.s3.amazonaws.com/latest/install
                         chmod +x ./install
