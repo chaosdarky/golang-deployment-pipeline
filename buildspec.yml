@@ -7,3 +7,12 @@ phases:
 
       # Ensure code passes all lint tests
       - composer install
+
+artifacts:
+  files:
+    - app/*
+    - appspec.yml
+    - buildspec.yml
+    - config/*
+    - codedeploy/*
+    - cloudformation/*
