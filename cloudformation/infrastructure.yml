@@ -32,6 +32,11 @@ Parameters:
         Type: Number
         Default: 2
 
+    DBInstanceClass:
+        Description: The database instance type
+        Type: String
+        Default: t2.micro
+
     DeploymentStrategy:
         Description: The CodeDeploy deployment strategy to user
         Type: String
@@ -182,48 +187,9 @@ Resources:
                         
                         # Install LAMP
                         yum -y update
-                        yum install -y ruby httpd php php-mysql mysql-server
+                        yum install -y ruby httpd php php-mysql
 
-                        # Start services
-                        service mysqld start
                         service httpd start
-
-                        # Secure database
-                        # non interactive mysql_secure_installation with a little help from expect.
- 
-                        SECURE_MYSQL=$(expect -c "
-  
-                        set timeout 10
-                        spawn mysql_secure_installation
-
-                        expect \"Enter current password for root (enter for none):\"
-                        send \"\r\"
-    
-                        expect \"Change the root password?\"
-                        send \"y\r\"
-
-                        expect \"New password:\"
-                        send \"p455w0rd\r\"
-                        expect \"Re-enter new password:\"
-                        send \"p455w0rd\r\"
-
-                        expect \"Remove anonymous users?\"
-                        send \"y\r\"
-     
-                        expect \"Disallow root login remotely?\"
-                        send \"y\r\"
-      
-                        expect \"Remove test database and access to it?\"
-                        send \"y\r\"
-       
-                        expect \"Reload privilege tables now?\"
-                        send \"y\r\"
-        
-                        expect eof
-                        ")
-
-                        echo "$SECURE_MYSQL"
-
 
                         cd /home/ec2-user
                         curl -O https://${InstallerBucket}.s3.amazonaws.com/latest/install
@@ -234,6 +200,34 @@ Resources:
                         /opt/aws/bin/cfn-signal -e $? --region ${AWS::Region} --stack ${AWS::StackName} --resource AutoScalingGroup
                     - InstallerBucket:
                         Fn::FindInMap: [ CodeDeployInstallerBuckets, !Ref "AWS::Region", Bucket]
+
+
+    ##########################################
+    # RDS
+    #########################################
+
+    DBEC2SecurityGroup:
+        Type: 'AWS::EC2::SecurityGroup'
+        Properties:
+            GroupDescription: Open database for access
+            SecurityGroupIngress:
+            - IpProtocol: tcp
+              FromPort: '3306'
+              ToPort: '3306'
+              SourceSecurityGroupName: !Ref ApplicationSecurityGroup
+
+    MySQLDatabase:
+        Type: 'AWS::RDS::DBInstance'
+        Properties:
+            Engine: MySQL
+            DBName: 'app1'
+            MultiAZ: 'true'
+            MasterUsername: 'root'
+            MasterUserPassword: 'p455w0rd'
+            DBInstanceClass: !Ref DBInstanceClass
+            AllocatedStorage: '10'
+            VPCSecurityGroups:
+            - !GetAtt DBEC2SecurityGroup.GroupId
 
     ###########################################
     # Load Balancer
@@ -300,7 +294,14 @@ Resources:
             SecurityGroupIngress:
                 # Only allow in bound from the load balancer
                 - SourceSecurityGroupId: !Ref LoadBalancerSecurityGroup 
-                  IpProtocol: -1
+                  IpProtocol: tcp
+                  FromPort: '80'
+                  ToPort: '80'
+                - IpProtocol: tcp
+                  FromPort: '22'
+                  ToPort: '22'
+                  CidrIp: 0.0.0.0/0
+                    
             Tags: 
                 - Key: Name
                   Value: !Sub ${ApplicationName}-${EnvironmentName}-ApplicationServers
