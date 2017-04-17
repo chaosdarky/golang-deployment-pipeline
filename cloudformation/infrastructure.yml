@@ -209,7 +209,6 @@ Resources:
     MySQLDatabase:
         Type: 'AWS::RDS::DBInstance'
         Properties:
-            VpcId: !Ref VPC
             DBSubnetGroupName: !Ref myDBSubnetGroupName
             Engine: MySQL
             DBName: 'app1'
@@ -326,12 +325,12 @@ Resources:
                   Value: !Sub ${ApplicationName}-${EnvironmentName}-DatabaseServers
 
     myDBSubnetGroupName: 
-        Type: "AWS::RDS::DBSubnetGroup"
+        Type: AWS::RDS::DBSubnetGroup
         Properties: 
-            DBSubnetGroupDescription: "description"
+            DBSubnetGroupDescription: Subnet Group for RDS
             SubnetIds: 
-            - !Ref PrivateSubnet1
-            - !Ref PrivateSubnet2
+                - !Ref PrivateSubnet1
+                - !Ref PrivateSubnet2
             Tags: 
                - Key: Name
                  Value: !Sub ${ApplicationName}-${EnvironmentName}-DatabaseSeres
