@@ -210,7 +210,7 @@ Resources:
         Type: 'AWS::RDS::DBInstance'
         Properties:
             VpcId: !Ref VPC
-            #DBSubnetGroupName: !Ref myDBSubnetGroupName
+            DBSubnetGroupName: !Ref myDBSubnetGroupName
             Engine: MySQL
             DBName: 'app1'
             MultiAZ: 'true'
@@ -320,21 +320,21 @@ Resources:
                 - IpProtocol: tcp
                   FromPort: '3306'
                   ToPort: '3306'
-                  SourceSecurityGroupName: !Ref ApplicationSecurityGroup
+                  SourceSecurityGroupId: !Ref ApplicationSecurityGroup
             Tags:
                 - Key: Name
                   Value: !Sub ${ApplicationName}-${EnvironmentName}-DatabaseServers
 
-   # myDBSubnetGroupName: 
-   #     Type: "AWS::RDS::DBSubnetGroup"
-   #     Properties: 
-   #         DBSubnetGroupDescription: "description"
-   #         SubnetIds: 
-   #         - !Ref PrivateSubnet1
-   #         - !Ref PrivateSubnet2
-   #         Tags: 
-   #            - Key: Name
-   #              Value: !Sub ${ApplicationName}-${EnvironmentName}-DatabaseSeres
+    myDBSubnetGroupName: 
+        Type: "AWS::RDS::DBSubnetGroup"
+        Properties: 
+            DBSubnetGroupDescription: "description"
+            SubnetIds: 
+            - !Ref PrivateSubnet1
+            - !Ref PrivateSubnet2
+            Tags: 
+               - Key: Name
+                 Value: !Sub ${ApplicationName}-${EnvironmentName}-DatabaseSeres
 
 
     ###########################################
