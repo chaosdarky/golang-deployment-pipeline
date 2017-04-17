@@ -317,10 +317,10 @@ Resources:
             VpcId: !Ref VPC
             GroupDescription: Open database for access
             SecurityGroupIngress:
-            - IpProtocol: tcp
-              FromPort: '3306'
-              ToPort: '3306'
-              SourceSecurityGroupName: !Ref ApplicationSecurityGroup
+                - IpProtocol: tcp
+                  FromPort: '3306'
+                  ToPort: '3306'
+                  SourceSecurityGroupName: !Ref ApplicationSecurityGroup
             Tags:
                 - Key: Name
                   Value: !Sub ${ApplicationName}-${EnvironmentName}-DatabaseServers
