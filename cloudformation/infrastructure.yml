@@ -312,7 +312,7 @@ Resources:
                   Value: !Sub ${ApplicationName}-${EnvironmentName}-LoadBalancers
 
     DBEC2SecurityGroup:
-        Type: 'AWS::EC2::SecurityGroup'
+        Type: AWS::EC2::SecurityGroup
         Properties:
             VpcId: !Ref VPC
             GroupDescription: Open database for access
