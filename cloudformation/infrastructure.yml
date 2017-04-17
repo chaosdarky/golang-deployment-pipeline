@@ -209,7 +209,7 @@ Resources:
     MySQLDatabase:
         Type: 'AWS::RDS::DBInstance'
         Properties:
-            VpcId: !Ref VPCi
+            VpcId: !Ref VPC
             #DBSubnetGroupName: !Ref myDBSubnetGroupName
             Engine: MySQL
             DBName: 'app1'
