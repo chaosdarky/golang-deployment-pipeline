@@ -2,7 +2,7 @@
 <html><body>
 <?php
 // you need a database to store things
-$db_host = 'localhost';
+$db_host = 'am1t992zbjdfbkz.ctwqxpgcnh1a.us-east-1.rds.amazonaws.com';
 $db_user = 'root';
 $db_pass = 'p455w0rd';
 $dbh = new mysqli($db_host, $db_user, $db_pass);
