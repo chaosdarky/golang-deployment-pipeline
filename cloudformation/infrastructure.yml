@@ -35,7 +35,7 @@ Parameters:
     DBInstanceClass:
         Description: The database instance type
         Type: String
-        Default: t2.micro
+        Default: db.t2.micro
 
     DeploymentStrategy:
         Description: The CodeDeploy deployment strategy to user
