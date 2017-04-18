@@ -23,7 +23,7 @@ if (!isset($_SESSION['user'])) { $_SESSION['user'] = session_id(); }
 session_write_close();
 $user=$_SESSION['user'];
 
-// Ensure structure is correct
+// Ensure structure is correc
 $dbh->query("CREATE DATABASE IF NOT EXISTS apps");
 $dbh->select_db('apps');
 $dbh->query("CREATE TABLE IF NOT EXISTS app1(id TEXT, points INT)");
