@@ -39,7 +39,7 @@ printf("Hey %s, your score is %d", $user, $row['points']);
 <br />
 
 <form action="" method="post">
-Username: <input type="text" name="user" value="<?php echo $user; ?>"/>
+Pangalan: <input type="text" name="user" value="<?php echo $user; ?>"/>
 <input type="submit" name="Submit" value="Change!" />
 </form>
 
