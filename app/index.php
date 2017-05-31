@@ -38,8 +38,10 @@ printf("Hey %s, your score is %d", $user, $row['points']);
 ?>
 <br />
 
+Hellow world <br />
+
 <form action="" method="post">
-Pangalans: <input type="text" name="user" value="<?php echo $user; ?>"/>
+Name: <input type="text" name="user" value="<?php echo $user; ?>"/>
 <input type="submit" name="Submit" value="Change!" />
 </form>
 
